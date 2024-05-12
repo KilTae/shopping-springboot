@@ -23,7 +23,17 @@ public class Role {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    //@Builder
+    @Builder
+    public Role(RoleType roleType, Member member) {
+        this.roleType = roleType;
+        this.member = member;
+    }
+
+    @Override
+    public String toString() {
+        return roleType.role;
+    }
+
 
 
 
