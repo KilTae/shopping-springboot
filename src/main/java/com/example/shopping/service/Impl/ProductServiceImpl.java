@@ -1,6 +1,7 @@
 package com.example.shopping.service.Impl;
 
 import com.example.shopping.controller.req.ProductCreateRequest;
+import com.example.shopping.controller.res.ProductResponse;
 import com.example.shopping.domain.Category;
 import com.example.shopping.domain.Options;
 import com.example.shopping.domain.Product;
@@ -10,6 +11,9 @@ import com.example.shopping.repository.*;
 import com.example.shopping.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -75,6 +79,13 @@ public class ProductServiceImpl implements ProductService {
 
 
     // 상품 조회
+    @Override
+    @Transactional(readOnly = true)
+    public ProductResponse productDetailFind(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_GOODS));
+        return new ProductResponse(product);
+    }
+
 
     // 상품 검색
 

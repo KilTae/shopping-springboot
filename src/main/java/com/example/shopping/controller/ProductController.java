@@ -2,6 +2,7 @@ package com.example.shopping.controller;
 
 
 import com.example.shopping.controller.req.ProductCreateRequest;
+import com.example.shopping.controller.res.ProductResponse;
 import com.example.shopping.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,5 +27,12 @@ public class ProductController {
     public void productCreate(@RequestBody @Valid ProductCreateRequest productCreateRequest) throws IOException {
         productService.productCreate(productCreateRequest);
 
+    }
+
+    @GetMapping("product/{productId}")
+    @ResponseStatus(HttpStatus.OK)
+    //
+    public ProductResponse productDetailFind(@PathVariable("productId") Long proudctId) {
+        return productService.productDetailFind(proudctId);
     }
 }
