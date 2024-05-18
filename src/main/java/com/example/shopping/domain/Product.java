@@ -40,7 +40,7 @@ public class Product extends BaseTimeEntity{
     private int view;
 
     @Column
-    private int like;
+    private int likeNumber;
 
    // private int buy;
 

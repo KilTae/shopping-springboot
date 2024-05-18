@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table (name = "order")
+@Table (name = "orders")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order extends BaseTimeEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

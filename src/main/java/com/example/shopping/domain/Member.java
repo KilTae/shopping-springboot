@@ -1,8 +1,11 @@
 package com.example.shopping.domain;
 
+import com.example.shopping.controller.req.LoginRequest;
+import com.example.shopping.controller.req.MemberSignupRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email; //왜 javax -> jakarta ?
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +29,15 @@ public class Member extends BaseTimeEntity {
     @Email
     private String email; //이메일
 
+    @Column(unique = false)
     private String password; //패스워드
 
-    private String address; //주소 // 따로 주소지를 빼는게 좋을 것 같음.
+    @Column(nullable = false)
+    private String zipcode;         //우편번호
+
+    @Column(nullable = false)
+    private String detailAddress;   //상세주소
+
 
     @Column (nullable = false, length = 20)
     private String name; //이름
@@ -46,9 +55,36 @@ public class Member extends BaseTimeEntity {
 
 
     // 회원 생성 (기존)
+    public static Member create(MemberSignupRequest memberSignupRequest, PasswordEncoder passwordEncoder) {
+        return Member.builder()
+                .loginId(memberSignupRequest.getLoginId())
+                .password(passwordEncoder.encode(memberSignupRequest.getPassword()))
+                .name(memberSignupRequest.getName())
+                .email(memberSignupRequest.getEmail())
+                .zipcode(memberSignupRequest.getZipcode())
+                .detailAddress(memberSignupRequest.getDetailAddress())
+                .phone(memberSignupRequest.getPhone())
+                .loginType(LoginType.NO_SOCIAL)
+                .build();
+    }
 
 
     //카카오 로그인 회원 생성
+
+    // 카카오 로그인 -> 회원 생성
+    public static Member kakaoCreate(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
+        return Member.builder()
+                .loginId(loginRequest.getLoginId())
+                .password(passwordEncoder.encode(loginRequest.getPassword()))
+                .name("")
+                .zipcode("")
+                .detailAddress("")
+                .email(loginRequest.getEmail())
+                .phone("")
+                .loginType(LoginType.KAKAO)
+                .build();
+    }
+
 
 
     //회원 수정
@@ -56,6 +92,9 @@ public class Member extends BaseTimeEntity {
 
     //회원 권한 설정
 
+    public void setRoles(Role role) {
+        this.getRoles().add(role);
+    }
 
 
 
