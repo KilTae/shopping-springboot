@@ -2,6 +2,7 @@ package com.example.shopping.domain;
 
 
 import com.example.shopping.controller.req.CategoryCreateRequest;
+import com.example.shopping.controller.req.CategoryEditRequest;
 import com.example.shopping.controller.res.CategoryResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -33,6 +34,10 @@ public class Category extends BaseTimeEntity{
         return Category.builder()
                 .category(categoryCreateRequest.getCategory())
                 .build();
+    }
+
+    public void editCategory(CategoryEditRequest categoryEditRequest) {
+        this.category = categoryEditRequest.getCategory();
     }
 
     //카테고리 수정
