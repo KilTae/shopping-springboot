@@ -1,6 +1,7 @@
 package com.example.shopping.service.Impl;
 
 import com.example.shopping.controller.req.CategoryCreateRequest;
+import com.example.shopping.controller.req.CategoryEditRequest;
 import com.example.shopping.controller.res.CategoryResponse;
 import com.example.shopping.domain.Category;
 import com.example.shopping.global.ErrorCode;
@@ -39,6 +40,26 @@ public class CategoryServiceimpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void categoryEdit(Long categoryId, CategoryEditRequest categoryEditRequest) {
+        Category category = ExistCategoryCheck(categoryId);
+        category.editCategory(categoryEditRequest);
+    }
+
+    @Override
+    public void categoryDelete(Long categoryId) {
+        Category category = ExistCategoryCheck(categoryId);
+
+        if(!productRepository.findAllByCategory(category).isEmpty()) {
+            throw new BusinessException(ErrorCode.CATEGORY_EXIST_GOODS);
+        }
+        categoryRepository.delete(category);
+    }
+
+    private Category ExistCategoryCheck(Long categoryId) {
+        return categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.NOT_FOUND_CATEGORY));
+    }
 
 
 }
