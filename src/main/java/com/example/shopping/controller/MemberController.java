@@ -2,12 +2,14 @@ package com.example.shopping.controller;
 
 import com.example.shopping.controller.req.LoginRequest;
 import com.example.shopping.controller.req.MemberSignupRequest;
+import com.example.shopping.controller.res.MemberResponse;
 import com.example.shopping.global.config.security.JwtTokenDto;
 import com.example.shopping.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,5 +38,13 @@ public class MemberController {
     //
     public JwtTokenDto login(@RequestBody LoginRequest loginRequest) throws JsonProcessingException {
         return memberService.login(loginRequest);
+    }
+
+    @GetMapping("/member/me")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN', 'SELLER')")
+    @ResponseStatus(HttpStatus.OK)
+    //
+    public MemberResponse findByDetailMyInfo() {
+        return memberService.findByDetailMyInfo();
     }
 }
