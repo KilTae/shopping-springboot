@@ -1,5 +1,6 @@
 package com.example.shopping.domain;
 
+import com.example.shopping.controller.req.LoginRequest;
 import com.example.shopping.controller.req.MemberSignupRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email; //왜 javax -> jakarta ?
@@ -57,8 +58,8 @@ public class Member extends BaseTimeEntity {
     public static Member create(MemberSignupRequest memberSignupRequest, PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .loginId(memberSignupRequest.getLoginId())
-                .password(memberSignupRequest.getPassword())
-                .name(memberSignupRequest.getPassword())
+                .password(passwordEncoder.encode(memberSignupRequest.getPassword()))
+                .name(memberSignupRequest.getName())
                 .email(memberSignupRequest.getEmail())
                 .zipcode(memberSignupRequest.getZipcode())
                 .detailAddress(memberSignupRequest.getDetailAddress())
@@ -69,7 +70,7 @@ public class Member extends BaseTimeEntity {
 
 
     //카카오 로그인 회원 생성
-    /*
+
     // 카카오 로그인 -> 회원 생성
     public static Member kakaoCreate(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
         return Member.builder()
@@ -83,7 +84,7 @@ public class Member extends BaseTimeEntity {
                 .loginType(LoginType.KAKAO)
                 .build();
     }
-    */
+
 
 
     //회원 수정
