@@ -21,7 +21,7 @@ public class Cart extends BaseTimeEntity{
     private Member member;
 
     @Column(nullable = false)
-    private Long producId; // ref
+    private Long productId; // ref
 
     @Column(nullable = false)
     private int totalAmount;

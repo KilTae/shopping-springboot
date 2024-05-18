@@ -1,6 +1,7 @@
 package com.example.shopping.controller;
 
 import com.example.shopping.controller.req.LoginRequest;
+import com.example.shopping.controller.req.MemberEditRequest;
 import com.example.shopping.controller.req.MemberSignupRequest;
 import com.example.shopping.controller.res.MemberResponse;
 import com.example.shopping.global.config.security.JwtTokenDto;
@@ -46,5 +47,21 @@ public class MemberController {
     //
     public MemberResponse findByDetailMyInfo() {
         return memberService.findByDetailMyInfo();
+    }
+
+    @PutMapping("/members")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN', 'SELLER')")
+    //
+    public void memberEdit(@RequestBody @Valid MemberEditRequest memberEditRequest) {
+        memberService.memberEdit(memberEditRequest);
+    }
+
+    @DeleteMapping("/members")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyAuthority('User', 'SELLER', 'ADMIN')")
+    //.
+    public void memberDelete() {
+        memberService.memberDelete();
     }
 }

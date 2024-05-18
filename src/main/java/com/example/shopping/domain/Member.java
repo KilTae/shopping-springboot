@@ -1,12 +1,14 @@
 package com.example.shopping.domain;
 
 import com.example.shopping.controller.req.LoginRequest;
+import com.example.shopping.controller.req.MemberEditRequest;
 import com.example.shopping.controller.req.MemberSignupRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email; //왜 javax -> jakarta ?
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,6 +49,9 @@ public class Member extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private LoginType loginType; //소셜 로그인 유무
+
+    @Column
+    private LocalDateTime deletedAt;
 
 
     @OneToMany (mappedBy = "member")
@@ -89,9 +94,20 @@ public class Member extends BaseTimeEntity {
 
     //회원 수정
 
+    public Member edit(MemberEditRequest memberEditRequest, PasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(memberEditRequest.getPassword());
+        this.zipcode = memberEditRequest.getZipcode();
+        this.detailAddress = memberEditRequest.getDetailAddress();
+        this.email = memberEditRequest.getEmail();
+        this.phone = memberEditRequest.getPhone();
+        return this;
+    }
+
+    public void setDeletedAt() {
+        this.deletedAt = LocalDateTime.now();
+    }
 
     //회원 권한 설정
-
     public void setRoles(Role role) {
         this.getRoles().add(role);
     }
