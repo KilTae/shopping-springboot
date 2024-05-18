@@ -1,6 +1,7 @@
 package com.example.shopping.domain;
 
 
+import com.example.shopping.controller.req.ProductCreateRequest;
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
@@ -53,7 +54,31 @@ public class Product extends BaseTimeEntity{
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Options> options = new ArrayList<>();
+
+    @Builder
+    public Product(Long id, Long memberId, String name, Category category, int price, String description) {
+        this.id = id;
+        this.memberId = memberId;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.description = description;
+    }
+
     // @Builder 생성
+    public static Product create(ProductCreateRequest productCreateRequest, Category category, Member member) {
+        return Product.builder()
+                .name(productCreateRequest.getName())
+                .memberId(member.getId())
+                .category(category)
+                .price(productCreateRequest.getPrice())
+                .description(productCreateRequest.getGoodsDescription())
+                .build();
+
+    }
+
 
 
     // 업데이트
