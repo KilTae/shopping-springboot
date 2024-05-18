@@ -1,10 +1,12 @@
 package com.example.shopping.domain;
 
 
+import com.example.shopping.controller.req.OptionCreateRequest;
 import com.example.shopping.domain.convert.OptionConverter;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,7 +36,30 @@ public class Options extends BaseTimeEntity{
     @Column
     private String description;
 
+    @Builder
+    public Options(Long id, Product product, List<OptionCreate> optionValue, int totalPrice, String description) {
+        this.id = id;
+        this.product = product;
+        this.optionValue = optionValue;
+        this.totalPrice = totalPrice;
+        this.description = description;
+    }
+
     //생성자
+    public static Options toOption(OptionCreateRequest optionCreateRequest, Product product) {
+        return Options.builder()
+                .product(product)
+                .optionValue(optionCreateRequest.getOptionValue())
+                .totalPrice(optionCreateRequest.getTotalPrice())
+                .description(optionCreateRequest.getOptionDescription())
+                .build();
+    }
+
 
     //연관관계 양방향 매핑
+
+    public void setProduct(Product product) {
+        this.product = product;
+        product.getOptions().add(this);
+    }
 }
