@@ -1,6 +1,8 @@
 package com.example.shopping.domain;
 
 
+import com.example.shopping.controller.req.CategoryCreateRequest;
+import com.example.shopping.controller.res.CategoryResponse;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -27,6 +29,12 @@ public class Category extends BaseTimeEntity{
     }
 
     //builder
+    public static Category toCategory(CategoryCreateRequest categoryCreateRequest) {
+        return Category.builder()
+                .category(categoryCreateRequest.getCategory())
+                .build();
+    }
 
     //카테고리 수정
+
 }
