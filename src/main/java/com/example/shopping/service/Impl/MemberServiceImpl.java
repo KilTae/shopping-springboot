@@ -2,19 +2,18 @@ package com.example.shopping.service.Impl;
 
 
 import com.example.shopping.controller.req.LoginRequest;
+import com.example.shopping.controller.req.MemberEditRequest;
 import com.example.shopping.controller.req.MemberSignupRequest;
 import com.example.shopping.controller.res.MemberResponse;
-import com.example.shopping.domain.LoginType;
-import com.example.shopping.domain.Role;
-import com.example.shopping.domain.RoleType;
+import com.example.shopping.domain.*;
 import com.example.shopping.global.ErrorCode;
 import com.example.shopping.global.config.security.JwtTokenDto;
 import com.example.shopping.global.config.security.TokenProvider;
 import com.example.shopping.global.exception.BusinessException;
+import com.example.shopping.repository.CartRepository;
 import com.example.shopping.repository.MemberRepository;
 import com.example.shopping.repository.RoleRepository;
 import com.example.shopping.service.MemberService;
-import com.example.shopping.domain.Member;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +39,7 @@ public class MemberServiceImpl implements MemberService {
     //private String bucket;
 
     private final MemberRepository memberRepository;
+    private final CartRepository cartRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
@@ -121,6 +121,45 @@ public class MemberServiceImpl implements MemberService {
         memberResponse.setRoles(list);
 
         return memberResponse;
+    }
+
+    @Override
+    public void memberEdit(MemberEditRequest memberEditRequest) {
+        Member member = getMember();
+        member.edit(memberEditRequest, passwordEncoder);
+    }
+
+    @Override
+    public void memberDelete() {
+        Member member = getMember();
+        member.setDeletedAt();
+
+        for(Role role : member.getRoles()) {
+            if(role.getRoleType().equals(RoleType.ROLE_USER)) {
+                List<Cart> cartList = cartRepository.findByMemberId(member.getId());
+                cartRepository.deleteAll(cartList);
+            }
+
+           // memberRepository.deleteAllById(member);
+        //    if(role.getRoleType().equals(RoleType.ROLE_SELLER)) {
+                //    for(Product prodcut : cartList){ 이미지, cart repository, service 계층 생성시 만들기
+                //      List<Image> imageList = imageRepository
+                //}
+        //    }
+
+        }
+    }
+
+
+    private Member getMember() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        return memberRepository.findByLoginId(loginId).orElseThrow(
+                () -> new BusinessException(ErrorCode.NOT_FOUND_MEMBER)
+        );
+
+
     }
 
 }
