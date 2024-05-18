@@ -39,7 +39,8 @@ public class ProductServiceImpl implements ProductService {
 
     // 상품 등록 - 이미지 일단은 미포함으로 구현
     @Override
-    public void productCreate(ProductCreateRequest productCreateRequest, List<MultipartFile> imgPath) {
+    public void productCreate(ProductCreateRequest productCreateRequest) {
+        // List<MultipartFile> imgPath
 
         Member member = getMember();
         if(productRepository.findByName(productCreateRequest.getName()).isPresent()) {
