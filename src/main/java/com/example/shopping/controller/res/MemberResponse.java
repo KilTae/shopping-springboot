@@ -5,6 +5,7 @@ import lombok.*;
 import com.example.shopping.domain.Member;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
