@@ -3,6 +3,7 @@ package com.example.shopping.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,9 +24,15 @@ public class Image extends BaseTimeEntity{
     private Product product;
 
 
+    @Builder
     public Image(String fileUrl, Product product) {
         this.fileUrl = fileUrl;
         this.product = product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+        product.getImags().add(this);
     }
 
     //이미지 추가
