@@ -2,13 +2,12 @@ package com.example.shopping.service.Impl;
 
 import com.example.shopping.controller.req.ProductCreateRequest;
 import com.example.shopping.controller.res.ProductResponse;
-import com.example.shopping.domain.Category;
-import com.example.shopping.domain.Options;
-import com.example.shopping.domain.Product;
+import com.example.shopping.domain.*;
 import com.example.shopping.global.ErrorCode;
 import com.example.shopping.global.exception.BusinessException;
 import com.example.shopping.repository.*;
 import com.example.shopping.service.ProductService;
+import com.example.shopping.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import com.example.shopping.domain.Member;
 
 
 import java.util.List;
@@ -30,12 +28,12 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProductServiceImpl implements ProductService {
 
-   // @Value("${cloud.aws.s3.bucket}")
-    //private String bucket;
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
-    //private final S3Service
+    private final S3Service s3Service;
     private final ProductRepository productRepository;
-   // private final ImageRepository imageRepository;
+    private final ImageRepository imageRepository;
     private final MemberRepository memberRepository;
     private final CategoryRepository categoryRepository;
     private final OptionRepository optionRepository;
@@ -43,8 +41,8 @@ public class ProductServiceImpl implements ProductService {
 
     // 상품 등록 - 이미지 일단은 미포함으로 구현
     @Override
-    public void productCreate(ProductCreateRequest productCreateRequest) {
-        // List<MultipartFile> imgPath
+    public void productCreate(ProductCreateRequest productCreateRequest, List<MultipartFile> imgPath) {
+
 
         Member member = getMember();
         if(productRepository.findByName(productCreateRequest.getName()).isPresent()) {
@@ -67,6 +65,13 @@ public class ProductServiceImpl implements ProductService {
         optionRepository.saveAll(optionsList);
 
         //s3
+        List<String> list = s3Service.upload(imgPath);
+
+        List<Image> imageList = list.stream().map(img -> Image.builder().fileUrl(img).product(product).build()).collect(Collectors.toList());
+        for(Image image : imageList ) {
+            image.setProduct(product);
+        }
+        imageRepository.saveAll(imageList);
 
         //db저장
 

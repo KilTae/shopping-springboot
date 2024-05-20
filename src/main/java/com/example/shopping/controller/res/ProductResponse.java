@@ -28,7 +28,7 @@ public class ProductResponse {
         this.productName = product.getName();
         this.categoryName = product.getCategory().getCategory();
         this.price = product.getPrice();
-     //   this.imageList = ImageResponse.toResponse(goods);
+        this.imageList = ImageResponse.toResponse(product);
         this.options = OptionResponse.toResponse(product);
 
     }
