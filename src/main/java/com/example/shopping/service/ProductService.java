@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.List;
 public interface ProductService{
 
-    //List<MultipartFile> imgPaths
-    void productCreate(ProductCreateRequest productCreateRequest) throws IOException;
+
+    void productCreate(ProductCreateRequest productCreateRequest, List<MultipartFile> imgPaths) throws IOException;
 
    // Page<ProductResponse> productFindAll(Pageable pageable);
 
