@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -24,8 +26,9 @@ public class ProductController {
     @PreAuthorize("hasAnyRole('SELLER')")
     //
     //, @RequestPart List<MultipartFile> multipartFileList
-    public void productCreate(@RequestBody @Valid ProductCreateRequest productCreateRequest) throws IOException {
-        productService.productCreate(productCreateRequest);
+    public void productCreate(@RequestPart(value = "productCreateRequest") @Valid ProductCreateRequest productCreateRequest,
+                              @RequestPart(value = "multipartFileList") List<MultipartFile> multipartFileList) throws IOException {
+        productService.productCreate(productCreateRequest, multipartFileList);
 
     }
 
