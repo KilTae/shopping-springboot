@@ -26,7 +26,7 @@ public class ProductCreateRequest {
     @Min(value = 1000 , message = "가격은 1000원 이상이어야 합니다.")
     private int price;
 
-    @Nullable
+    @NotNull(message = "옵션을 입력하세요.")
     private List<OptionCreateRequest> optionCreateRequest;
 
     @Nullable
