@@ -28,8 +28,6 @@ spring:
     multipart:
       enabled: true
       location: /upload
-
-
   application:
     name: shopping
 
