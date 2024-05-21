@@ -19,7 +19,8 @@ import java.util.List;
 
 public class Options extends BaseTimeEntity{
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @JsonBackReference

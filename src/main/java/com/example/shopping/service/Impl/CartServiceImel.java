@@ -89,18 +89,16 @@ public class CartServiceImel implements CartService {
         List<Options> options = optionRepository.findByProductId(product.getId());
 
         if(options.isEmpty()) {
-            System.out.println("잘나옴 노옵션");
+
             if(cartEditRequest.getOptionNumber() != null) throw new BusinessException(ErrorCode.NOT_FOUND_OPTION);
             cart.editCartExcludeOption(product, cartEditRequest);
-            System.out.println(cartEditRequest.getAmount());
+
             return;
         }
 
         for(Options option: options) {
-            System.out.println("잘나옴 옵션");
             if(!option.getId().equals(cartEditRequest.getOptionNumber())) continue;
             cart.editCartIncludeOption(option, cartEditRequest);
-            System.out.println(cartEditRequest.getAmount());
 
             return;
         }

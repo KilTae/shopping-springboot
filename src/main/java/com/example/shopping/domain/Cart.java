@@ -1,8 +1,10 @@
 package com.example.shopping.domain;
 
 
+import com.example.shopping.controller.req.CartEditRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "cart")
 @Entity
 public class Cart extends BaseTimeEntity{
+
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id")
@@ -32,10 +35,30 @@ public class Cart extends BaseTimeEntity{
     @Column
     private Long optionNumber; // ref
 
+    @Builder
+    public Cart(Long id, Member member, Long productId, int totalAmount, int totalPrice, Long optionNumber) {
+        this.id = id;
+        this.member = member;
+        this.productId = productId;
+        this.totalAmount = totalAmount;
+        this.totalPrice = totalPrice;
+        this.optionNumber = optionNumber;
+    }
 
-    //생성자
+    public void editCartIncludeOption(Options options, CartEditRequest cartEditRequest) {
+        int goodsTotalPrice = options.getTotalPrice();
+        this.totalAmount = cartEditRequest.getAmount();
+        this.optionNumber = cartEditRequest.getOptionNumber();
+        this.totalPrice = goodsTotalPrice * (cartEditRequest.getAmount());
 
-    //가격편집
+    }
+
+    public void editCartExcludeOption(Product product , CartEditRequest cartEditRequest) {
+        this.totalAmount = cartEditRequest.getAmount();
+        this.optionNumber = cartEditRequest.getOptionNumber();
+        this.totalPrice = product.getPrice() * (cartEditRequest.getAmount());
+
+    }
 
 
 
