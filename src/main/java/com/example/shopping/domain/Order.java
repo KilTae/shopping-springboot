@@ -1,8 +1,10 @@
 package com.example.shopping.domain;
 
 
+import com.example.shopping.controller.req.OrderCreateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -45,13 +47,44 @@ public class Order extends BaseTimeEntity{
     @Column(nullable = false)
     private String merchantId;
 
+    @Builder
+    public Order(Long memberId, String name, String phone, String zipcode, String detailAddress, String requirement, int totalPrice, String impUid, String merchantId) {
+        this.memberId = memberId;
+        this.name = name;
+        this.phone = phone;
+        this.zipcode = zipcode;
+        this.detailAddress = detailAddress;
+        this.requirement = requirement;
+        this.totalPrice = totalPrice;
+        this.orderStatus = OrderStatus.COMPLETE;
+        this.impUid = impUid;
+        this.merchantId = merchantId;
+    }
 
-    //빌더
+    public static Order toOrder(OrderCreateRequest orderCreateRequest, Member member) {
 
-    //주문 생성
+        int totalPrice = 0;
+        for (OrderCreateRequest.orderProductCreate orderItemCreate : orderCreateRequest.getOrderProductCreates()) {
+            totalPrice += orderItemCreate.getOrderPrice();
+        }
 
-    //주문 상태 변경
+        return Order.builder()
+                .memberId(member.getId())
+                .name(orderCreateRequest.getName())
+                .phone(orderCreateRequest.getPhone())
+                .zipcode(orderCreateRequest.getZipcode())
+                .detailAddress(orderCreateRequest.getDetailAddress())
+                .requirement(orderCreateRequest.getRequirement())
+                .totalPrice(totalPrice)
+                .impUid(orderCreateRequest.getImpUid())
+                .merchantId(orderCreateRequest.getMerchantId())
+                .build();
+    }
 
+    // 주문 상태 변경
+    public void orderStatusChangeCancel() {
+        this.orderStatus = OrderStatus.CANCEL;
+    }
 
 
 }
