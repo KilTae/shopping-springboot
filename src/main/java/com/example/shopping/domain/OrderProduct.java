@@ -1,6 +1,7 @@
 package com.example.shopping.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,7 +37,28 @@ public class OrderProduct extends BaseTimeEntity{
     @Column(nullable = false)
     private int orderPrice;      //주문수량가격
 
-    //빌더 생성
-    //주문_상품 생성
+    @Builder
+    public OrderProduct(Long memberId, Long productId, String productName, int price, Order order, int amount, int orderPrice) {
+        this.memberId = memberId;
+        this.productId = productId;
+        this.productName = productName;
+        this.price = price;
+        this.order = order;
+        this.amount = amount;
+        this.orderPrice = orderPrice;
+    }
+
+    // 주문_상품 생성
+    public static OrderProduct createOrderProduct(Member member, Long productId, int orderPrice , int amount, Order order, String productName, int price) {
+        return OrderProduct.builder()
+                .memberId(member.getId())
+                .order(order)
+                .productId(productId)
+                .amount(amount)
+                .orderPrice(orderPrice)
+                .productName(productName)
+                .price(price)
+                .build();
+    }
 
 }

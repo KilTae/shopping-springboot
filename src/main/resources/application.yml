@@ -1,7 +1,7 @@
 # spring.application.name=shopping
 
 server:
-  port: 8081
+  port: 8082
   servlet:
     multipart:
       maxFileSize: 10MB
@@ -28,6 +28,7 @@ spring:
     multipart:
       enabled: true
       location: /upload
+
   application:
     name: shopping
 

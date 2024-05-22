@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.Query;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("select r from Review r join r.comment rc")
-    Page<Review> findAllByProduct(Product product, Pageable pageable)
+    Page<Review> findAllByProduct(Product product, Pageable pageable);
 }
