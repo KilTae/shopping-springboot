@@ -4,6 +4,7 @@ server:
   port: 8082
   servlet:
     multipart:
+      enabled : true
       maxFileSize: 10MB
       maxRequestSize: 100MB
 spring:

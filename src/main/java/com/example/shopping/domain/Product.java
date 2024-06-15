@@ -2,6 +2,7 @@ package com.example.shopping.domain;
 
 
 import com.example.shopping.controller.req.ProductCreateRequest;
+import com.example.shopping.controller.req.ProductEditRequest;
 import jakarta.persistence.*;
 
 import lombok.AccessLevel;
@@ -81,7 +82,11 @@ public class Product extends BaseTimeEntity{
     }
 
 
+    public void update(ProductEditRequest productEditRequest) {
+        this.name = productEditRequest.getName();
+        this.description = productEditRequest.getGoodsDescription();
+        this.price = productEditRequest.getPrice();
+    }
 
-    // 업데이트
 
 }
