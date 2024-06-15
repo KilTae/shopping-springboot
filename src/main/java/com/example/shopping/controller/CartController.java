@@ -24,7 +24,7 @@ public class CartController {
     @PostMapping("/cart")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyRole('USER')")
-    public void cartAddGoods( @RequestBody @Valid CartCreateRequest cartCreateRequest) {
+    public void cartAddGoods(@RequestBody @Valid CartCreateRequest cartCreateRequest) {
         cartService.cartAddProduct(cartCreateRequest);
     }
 
