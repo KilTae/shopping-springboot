@@ -1,8 +1,10 @@
 package com.example.shopping.domain;
 
 
+import com.example.shopping.controller.req.ReplyCreateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,9 +12,10 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "reply")
-public class Reply extends BaseTimeEntity{
+public class Reply extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = true)
@@ -25,9 +28,24 @@ public class Reply extends BaseTimeEntity{
     @Column(nullable = false)
     private String comment;
 
-    // 빌더
+    @Builder
+    public Reply(Long memberId, Review review, String comment) {
+        this.memberId = memberId;
+        this.review = review;
+        this.comment = comment;
+    }
 
-    //edit
+    public void edit(String comment) {
+        this.comment = comment;
+    }
 
-    //대댓글 생성
+    // 대댓글 생성
+    public static Reply createReply(Member member, Review review, ReplyCreateRequest replyCreateRequest) {
+        return Reply.builder()
+                .memberId(member.getId())
+                .review(review)
+                .comment(replyCreateRequest.getReplyComment())
+                .build();
+
+    }
 }
