@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.5'
 	id 'io.spring.dependency-management' version '1.1.4'
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+//	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.example'
@@ -40,11 +40,11 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	// == 스프링 부트 3.0 이상 ==
-	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
-	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	//implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	//annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
 
-	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+//	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+//	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
 	// === QueryDsl 끝 ===
 
@@ -62,21 +62,21 @@ tasks.named('test') {
 }
 
 // === Querydsl 빌드 옵션 (선택사항) ===
-def querydslDir = "$buildDir/generated/querydsl"
+//def querydslDir = "$buildDir/generated/querydsl"
 
-querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
+//querydsl {
+//	jpa = true
+//	querydslSourcesDir = querydslDir
+//}
 
-sourceSets {
-	main.java.srcDir querydslDir
-}
+//sourceSets {
+//	main.java.srcDir querydslDir
+//}
 
-configurations {
-	querydsl.extendsFrom compileClasspath
-}
+//configurations {
+//	querydsl.extendsFrom compileClasspath
+//}
 
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
+//compileQuerydsl {
+//	options.annotationProcessorPath = configurations.querydsl
+//}
