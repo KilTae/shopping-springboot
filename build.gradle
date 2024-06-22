@@ -65,26 +65,23 @@ tasks.named('test') {
 //	delete file('src/main/generated')
 //}
 // === Querydsl 빌드 옵션 (선택사항) ===
-def querydslDir = "$buildDir/generated/querydsl"
+//def querydslDir = "$buildDir/generated/querydsl"
 
-querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
+//querydsl {
+//	jpa = true
+//	querydslSourcesDir = querydslDir
+//}
 
-sourceSets {
-	main.java.srcDir querydslDir
-}
+//sourceSets {
+//	main.java.srcDir querydslDir
+//}
+//configurations {
+//	querydsl.extendsFrom compileClasspath
+//}
 
-configurations {
-	querydsl.extendsFrom compileClasspath
-}
-
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
-
-compileQuerydsl.doFirst {
-	if(file(querydslDir).exists())
-		delete(file(querydslDir))
+//compileQuerydsl {
+//	options.annotationProcessorPath = configurations.querydsl
+//}
+clean {
+	delete file('src/main/generated')
 }
