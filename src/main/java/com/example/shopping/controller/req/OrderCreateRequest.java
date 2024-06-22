@@ -1,6 +1,6 @@
 package com.example.shopping.controller.req;
 
-import com.example.shopping.domain.QOrderProduct;
+//import com.example.shopping.domain.QOrderProduct;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
