@@ -2,6 +2,7 @@ package com.example.shopping.service;
 
 import com.example.shopping.controller.req.ReviewCreateRequest;
 import com.example.shopping.controller.req.ReviewEditRequest;
+import com.example.shopping.controller.res.ProductResponse;
 import com.example.shopping.controller.res.ReviewResponse;
 
 import org.springframework.data.domain.Page;
@@ -13,6 +14,8 @@ public interface ReviewService {
 
     // 리뷰 전체
     Page<ReviewResponse> reviewFindAll(Long goodsId, Pageable pageable);
+
+    Page<ProductResponse> productFindAll(Pageable pageable);
 
     // 리뷰 수정
     void reviewEdit(Long reviewId, ReviewEditRequest reviewEditRequest);

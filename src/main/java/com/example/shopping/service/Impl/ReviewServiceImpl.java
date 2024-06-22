@@ -2,6 +2,7 @@ package com.example.shopping.service.Impl;
 
 import com.example.shopping.controller.req.ReviewCreateRequest;
 import com.example.shopping.controller.req.ReviewEditRequest;
+import com.example.shopping.controller.res.ProductResponse;
 import com.example.shopping.controller.res.ReviewResponse;
 import com.example.shopping.domain.OrderProduct;
 import com.example.shopping.domain.Product;
@@ -64,6 +65,19 @@ public class ReviewServiceImpl implements ReviewService {
         Product product = productRepository.findById(goodsId).orElseThrow(() -> new BusinessException(ErrorCode.NOT_BUY_GOODS));
         Page<Review> reviews = reviewRepository.findAllByProduct(product, pageable);
         return reviews.map(ReviewResponse::new);
+    }
+
+
+    @Override
+    //@TimerAop 시간측정, aop에 관련해서 찾아보기
+    @Transactional(readOnly = true)
+    //  @Cacheable(cacheNames = "product", key = "#pageable")
+    public Page<ProductResponse> productFindAll(Pageable pageable) {
+        Page<Product> products = productRepository.findAll(pageable);
+
+        Page<ProductResponse> responses = products.map(product -> new ProductResponse(product));
+        return responses;
+
     }
 
     // 리뷰 수정
