@@ -2,7 +2,7 @@ package com.example.shopping.controller.res;
 
 
 import com.example.shopping.domain.Product;
-import com.querydsl.core.annotations.QueryProjection;
+//import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class ProductResponse {
     private List<ImageResponse> imageList;
     private List<OptionResponse> options;
 
-    @QueryProjection
+  //  @QueryProjection
     public ProductResponse(Product product) {
         this.memberId = product.getMemberId();
         this.productId = product.getId();
