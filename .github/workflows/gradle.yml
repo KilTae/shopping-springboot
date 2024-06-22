@@ -37,6 +37,9 @@ jobs:
       run: chmod +x ./gradlew
       shell: bash
 
+    - name: gradle 빌드
+      run: ./gradlew build
+      shell: bash
     
 
     - name: Setup Gradle
